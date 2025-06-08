@@ -6,23 +6,46 @@ use App\Http\Controllers\IpAddressController;
 use App\Http\Controllers\NetworkToolsController;
 use Illuminate\Support\Facades\Route;
 
+// Dashboard Route
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('inventory', InventoryController::class);
-// Inventory Tools
-Route::resource('ip-addresses', IpAddressController::class);
+// Inventory Management Routes
+// Mengganti Route::resource('inventory', InventoryController::class)
+Route::prefix('inventory')->name('inventory.')->controller(InventoryController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{inventory}', 'show')->name('show');
+    Route::get('/{inventory}/edit', 'edit')->name('edit');
+    Route::put('/{inventory}', 'update')->name('update');
+    Route::patch('/{inventory}', 'update');
+    Route::delete('/{inventory}', 'destroy')->name('destroy');
+});
 
-// Network Tools Routes
-Route::prefix('tools')->name('tools.')->group(function () {
-    Route::get('/ping', [NetworkToolsController::class, 'ping'])->name('ping');
-    Route::post('/ping', [NetworkToolsController::class, 'executePing'])->name('ping.execute');
+// IP Address Management Routes
+// Mengganti Route::resource('ip-addresses', IpAddressController::class)
+Route::prefix('ip-addresses')->name('ip-addresses.')->controller(IpAddressController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{ip_address}', 'show')->name('show');
+    Route::get('/{ip_address}/edit', 'edit')->name('edit');
+    Route::put('/{ip_address}', 'update')->name('update');
+    Route::patch('/{ip_address}', 'update');
+    Route::delete('/{ip_address}', 'destroy')->name('destroy');
+});
 
-    Route::get('/traceroute', [NetworkToolsController::class, 'traceroute'])->name('traceroute');
-    Route::post('/traceroute', [NetworkToolsController::class, 'executeTraceroute'])->name('traceroute.execute');
+// Network Tools Routes (Sudah dalam bentuk group, jadi hanya perlu memastikan konsistensi)
+Route::prefix('tools')->name('tools.')->controller(NetworkToolsController::class)->group(function () {
+    Route::get('/ping', 'ping')->name('ping');
+    Route::post('/ping', 'executePing')->name('ping.execute');
 
-    Route::get('/port-scanner', [NetworkToolsController::class, 'portScanner'])->name('port-scanner');
-    Route::post('/port-scanner', [NetworkToolsController::class, 'executePortScan'])->name('port-scanner.execute');
+    Route::get('/traceroute', 'traceroute')->name('traceroute');
+    Route::post('/traceroute', 'executeTraceroute')->name('traceroute.execute');
 
-    Route::get('/whois', [NetworkToolsController::class, 'whois'])->name('whois');
-    Route::post('/whois', [NetworkToolsController::class, 'executeWhois'])->name('whois.execute');
+    Route::get('/port-scanner', 'portScanner')->name('port-scanner');
+    Route::post('/port-scanner', 'executePortScan')->name('port-scanner.execute');
+
+    Route::get('/whois', 'whois')->name('whois');
+    Route::post('/whois', 'executeWhois')->name('whois.execute');
 });
