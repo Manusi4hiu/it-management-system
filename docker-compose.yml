@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # Laravel Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: it-management-app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/html/database/database.sqlite
+    depends_on:
+      - mysql
+    networks:
+      - it-management-network
+
+  # MySQL Database (Optional - jika ingin pakai MySQL instead of SQLite)
+  mysql:
+    image: mysql:8.0
+    container_name: it-management-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: it_management
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravelpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - it-management-network
+
+  # phpMyAdmin (Optional - untuk manage MySQL)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: it-management-phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    depends_on:
+      - mysql
+    networks:
+      - it-management-network
+
+  # Redis (Optional - untuk caching dan sessions)
+  redis:
+    image: redis:7-alpine
+    container_name: it-management-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - it-management-network
+
+volumes:
+  mysql_data:
+
+networks:
+  it-management-network:
+    driver: bridge
