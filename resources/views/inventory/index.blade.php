@@ -5,6 +5,7 @@
 @section('page-subtitle', 'Manage and track all your IT assets in one place')
 
 @section('page-actions')
+
 <a href="{{ route('inventory.create') }}" class="btn btn-gradient px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
     <i class="fas fa-plus me-2"></i>Add New Item
 </a>

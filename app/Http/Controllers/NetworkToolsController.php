@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Hash;
 
 class NetworkToolsController extends Controller
 {
@@ -46,6 +47,17 @@ class NetworkToolsController extends Controller
                 'error' => 'Failed to execute ping command: ' . $e->getMessage()
             ]);
         }
+    }
+
+    public function randomPortGenerator()
+    {
+        // Generate an initial random port to display on page load.
+        // The range is from the end of well-known ports (1024) to the max possible port (65535).
+        $initialPort = mt_rand(1024, 65535);
+
+        return view('tools.random-port-generator', [
+            'initialPort' => $initialPort,
+        ]);
     }
 
     public function traceroute(): View
@@ -209,5 +221,61 @@ class NetworkToolsController extends Controller
         ];
 
         return $services[$port] ?? 'Unknown';
+    }
+
+    public function bcryptGenerator()
+    {
+        return view('tools.bcrypt-generator');
+    }
+
+    /**
+     * Handle the bcrypt hashing request via AJAX.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function handleBcryptHash(Request $request)
+    {
+        $request->validate([
+            'string_to_hash' => 'required|string|max:255',
+            'rounds' => 'required|integer|min:4|max:31',
+        ]);
+
+        try {
+            $hashedValue = Hash::make($request->string_to_hash, [
+                'rounds' => $request->rounds,
+            ]);
+
+            return response()->json(['success' => true, 'hash' => $hashedValue]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to generate hash.'], 500);
+        }
+    }
+
+    /**
+     * Handle the bcrypt comparison request via AJAX.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function handleBcryptCompare(Request $request)
+    {
+        $request->validate([
+            'string_to_compare' => 'required|string|max:255',
+            'hash_to_compare' => 'required|string',
+        ]);
+
+        try {
+            $isMatch = Hash::check($request->string_to_compare, $request->hash_to_compare);
+
+            return response()->json(['success' => true, 'match' => $isMatch]);
+        } catch (\Exception $e) {
+            // This can happen if the hash format is invalid
+            return response()->json(['success' => false, 'message' => 'Invalid hash format provided.'], 422);
+        }
+    }
+    public function integerBaseConverter()
+    {
+        return view('tools.integer-base-converter');
     }
 }
