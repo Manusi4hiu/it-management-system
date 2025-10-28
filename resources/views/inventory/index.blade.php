@@ -5,10 +5,13 @@
 @section('page-subtitle', 'Manage and track all your IT assets in one place')
 
 @section('page-actions')
-
-<a href="{{ route('inventory.create') }}" class="btn btn-gradient px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-    <i class="fas fa-plus me-2"></i>Add New Item
-</a>
+@auth
+    @if(auth()->user()->role === 'admin')
+    <a href="{{ route('inventory.create') }}" class="btn btn-gradient px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+        <i class="fas fa-plus me-2"></i>Add New Item
+    </a>
+    @endif
+@endauth
 @endsection
 
 @section('content')
@@ -210,13 +213,19 @@
                                 <li><a class="dropdown-item" href="{{ route('inventory.show', $item) }}">
                                     <i class="fas fa-eye me-2 text-blue-500"></i>View Details
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('inventory.edit', $item) }}">
-                                    <i class="fas fa-edit me-2 text-yellow-500"></i>Edit Item
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="#" onclick="deleteItem({{ $item->id }})">
-                                    <i class="fas fa-trash me-2"></i>Delete Item
-                                </a></li>
+                                @auth
+                                @if(auth()->user()->role === 'admin')
+                                    <li><a class="dropdown-item" href="{{ route('inventory.edit', $item) }}">
+                                        <i class="fas fa-edit me-2 text-yellow-500"></i>Edit Item
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" onclick="deleteItem({{ $item->id }})">
+                                            <i class="fas fa-trash me-2"></i>Delete Item
+                                        </a>
+                                    </li>
+                                @endif
+                                @endauth
                             </ul>
                         </div>
                     </div>
@@ -283,10 +292,14 @@
                                class="btn btn-sm btn-outline-primary rounded-full px-3 py-1 hover:bg-blue-500 hover:text-white transition-all duration-200">
                                 <i class="fas fa-eye text-xs"></i>
                             </a>
-                            <a href="{{ route('inventory.edit', $item) }}"
-                               class="btn btn-sm btn-outline-warning rounded-full px-3 py-1 hover:bg-yellow-500 hover:text-white transition-all duration-200">
-                                <i class="fas fa-edit text-xs"></i>
-                            </a>
+                            @auth
+                            @if(auth()->user()->role === 'admin')
+                                <a href="{{ route('inventory.edit', $item) }}"
+                                   class="btn btn-sm btn-outline-warning rounded-full px-3 py-1 hover:bg-yellow-500 hover:text-white transition-all duration-200">
+                                    <i class="fas fa-edit text-xs"></i>
+                                </a>
+                            @endif
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -301,9 +314,11 @@
                     </div>
                     <h4 class="text-gray-600 font-semibold mb-2">No Inventory Items Found</h4>
                     <p class="text-gray-500 mb-4">Start by adding your first inventory item to track your IT assets.</p>
+                    @can('create-inventory')
                     <a href="{{ route('inventory.create') }}" class="btn btn-gradient px-6 py-2 rounded-full">
                         <i class="fas fa-plus me-2"></i>Add First Item
                     </a>
+                    @endcan
                 </div>
             </div>
         </div>

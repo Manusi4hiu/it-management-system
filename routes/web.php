@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Inventory Management Routes - Admin Only
-    Route::middleware(['role:admin'])->prefix('inventory')->name('inventory.')->controller(InventoryController::class)->group(function () {
+    Route::prefix('inventory')->name('inventory.')->controller(InventoryController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // IP Address Management Routes - Admin Only
-    Route::middleware(['role:admin'])->prefix('ip-addresses')->name('ip-addresses.')->controller(IpAddressController::class)->group(function () {
+    Route::prefix('ip-addresses')->name('ip-addresses.')->controller(IpAddressController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/', 'store')->name('store');

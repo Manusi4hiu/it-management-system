@@ -5,9 +5,11 @@
 @section('page-subtitle', 'Manage and monitor your network IP addresses')
 
 @section('page-actions')
+@if(auth()->user()->role === 'admin')
 <a href="{{ route('ip-addresses.create') }}" class="btn btn-gradient shadow-lg">
     <i class="fas fa-plus me-2"></i>Add New IP
 </a>
+@endif
 @endsection
 
 @section('content')
@@ -229,16 +231,20 @@
                                 <li><a class="dropdown-item" href="{{ route('ip-addresses.show', $ip) }}">
                                     <i class="fas fa-eye me-2 text-primary"></i>View Details
                                 </a></li>
+                                @if(auth()->user()->role === 'admin')
                                 <li><a class="dropdown-item" href="{{ route('ip-addresses.edit', $ip) }}">
                                     <i class="fas fa-edit me-2 text-warning"></i>Edit IP
                                 </a></li>
+                                @endif
                                 <li><a class="dropdown-item" href="#" onclick="pingIP('{{ $ip->ip_address }}')">
                                     <i class="fas fa-satellite-dish me-2 text-success"></i>Ping IP
                                 </a></li>
+                                @if(auth()->user()->role === 'admin')
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#" onclick="deleteIP({{ $ip->id }})">
                                     <i class="fas fa-trash me-2"></i>Delete IP
                                 </a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -349,12 +355,14 @@
                                title="View Details">
                                 <i class="fas fa-eye" style="font-size: 12px;"></i>
                             </a>
+                            @if(auth()->user()->role === 'admin')
                             <a href="{{ route('ip-addresses.edit', $ip) }}"
                                class="btn btn-sm btn-outline-warning"
                                style="border-radius: 50px; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;"
                                title="Edit IP">
                                 <i class="fas fa-edit" style="font-size: 12px;"></i>
                             </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -369,9 +377,13 @@
                     </div>
                     <h4 class="text-muted fw-semibold mb-2">No IP Addresses Found</h4>
                     <p class="text-muted mb-4">Start by adding your first IP address to track your network.</p>
+                    @if(auth()->user()->role === 'admin')
                     <a href="{{ route('ip-addresses.create') }}" class="btn btn-gradient">
                         <i class="fas fa-plus me-2"></i>Add First IP
                     </a>
+                    @else
+                    <p class="text-muted">Contact your administrator to add IP addresses.</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -446,11 +458,13 @@
 
 @push('scripts')
 <script>
+@if(auth()->user()->role === 'admin')
 function deleteIP(id) {
     const form = document.getElementById('deleteForm');
     form.action = `/ip-addresses/${id}`;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
+@endif
 
 function pingIP(ipAddress) {
     const modal = new bootstrap.Modal(document.getElementById('pingModal'));

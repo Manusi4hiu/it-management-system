@@ -9,9 +9,13 @@
     <button onclick="printItem()" class="btn btn-success" style="border-radius: 50px;">
         <i class="fas fa-print me-2"></i>Print
     </button>
-    <a href="{{ route('inventory.edit', $inventory) }}" class="btn btn-gradient" style="border-radius: 50px;">
-        <i class="fas fa-edit me-2"></i>Edit Item
-    </a>
+    @auth
+        @if(auth()->user()->role === 'admin')
+            <a href="{{ route('inventory.edit', $inventory) }}" class="btn btn-gradient" style="border-radius: 50px;">
+                <i class="fas fa-edit me-2"></i>Edit Item
+            </a>
+        @endif
+    @endauth
     {{-- <div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="border-radius: 50px;">
             <i class="fas fa-cog me-2"></i>Actions

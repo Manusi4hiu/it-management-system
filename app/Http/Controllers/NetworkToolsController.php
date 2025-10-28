@@ -236,7 +236,11 @@ class NetworkToolsController extends Controller
      */
     public function handleBcryptHash(Request $request)
     {
+
+
         $request->validate([
+
+
             'string_to_hash' => 'required|string|max:255',
             'rounds' => 'required|integer|min:4|max:31',
         ]);

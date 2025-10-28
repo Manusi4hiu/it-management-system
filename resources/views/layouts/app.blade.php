@@ -782,8 +782,8 @@
                 </a>
             </li>
 
-            @auth
-                @if(Auth::user()->isAdmin())
+            {{-- @auth
+                @if(Auth::user()->isAdmin()) --}}
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('inventory.*') ? 'active' : '' }}"
                         href="{{ route('inventory.index') }}">
@@ -800,13 +800,13 @@
 
                     </a>
                 </li>
-                @endif
-            @endauth
+                {{-- @endif
+            @endauth --}}
 
             <div class="sidebar-heading">
                 Network Tools
             </div>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('tools.ping') ? 'active' : '' }}"
                     href="{{ route('tools.ping') }}">
                     <i class="fas fa-satellite-dish"></i>
@@ -819,7 +819,7 @@
                     <i class="fas fa-route"></i>
                     Traceroute
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('tools.port-scanner') ? 'active' : '' }}"
                     href="{{ route('tools.port-scanner') }}">
@@ -827,13 +827,13 @@
                     Port Scanner
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('tools.whois') ? 'active' : '' }}"
                     href="{{ route('tools.whois') }}">
                     <i class="fas fa-info-circle"></i>
                     Whois
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('tools.random-port-generator') ? 'active' : '' }}"
                     href="{{ route('tools.random-port-generator') }}">

@@ -9,10 +9,12 @@
     <button onclick="pingIP('{{ $ipAddress->ip_address }}')" class="btn btn-success" style="border-radius: 50px;">
         <i class="fas fa-satellite-dish me-2"></i>Ping
     </button>
+    @can('edit-ip-address')
     <a href="{{ route('ip-addresses.edit', $ipAddress) }}" class="btn btn-gradient" style="border-radius: 50px;">
         <i class="fas fa-edit me-2"></i>Edit IP
     </a>
-    <div class="dropdown">
+    @endcan
+    {{-- <div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" style="border-radius: 50px;">
             <i class="fas fa-cog me-2"></i>Actions
         </button>
@@ -31,7 +33,7 @@
                 <i class="fas fa-trash me-2"></i>Delete IP
             </a></li>
         </ul>
-    </div>
+    </div> --}}
     <a href="{{ route('ip-addresses.index') }}" class="btn btn-outline-secondary" style="border-radius: 50px;">
         <i class="fas fa-arrow-left me-2"></i>Back
     </a>
@@ -264,9 +266,9 @@
                     <button class="btn btn-success shadow" onclick="pingIP('{{ $ipAddress->ip_address }}')" style="border-radius: 15px;">
                         <i class="fas fa-satellite-dish me-2"></i>Ping IP
                     </button>
-                    <button class="btn btn-info shadow" onclick="tracerouteIP('{{ $ipAddress->ip_address }}')" style="border-radius: 15px;">
+                    {{-- <button class="btn btn-info shadow" onclick="tracerouteIP('{{ $ipAddress->ip_address }}')" style="border-radius: 15px;">
                         <i class="fas fa-route me-2"></i>Traceroute
-                    </button>
+                    </button> --}}
                     <a href="{{ route('tools.port-scanner') }}?host={{ $ipAddress->ip_address }}" class="btn btn-warning shadow" style="border-radius: 15px;">
                         <i class="fas fa-search me-2"></i>Port Scan
                     </a>
@@ -654,10 +656,10 @@ document.querySelectorAll('.btn').forEach(btn => {
 });
 
 // Auto-test connectivity on page load
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        testConnectivity();
-    }, 1000);
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     setTimeout(() => {
+//         testConnectivity();
+//     }, 1000);
+// });
 </script>
 @endpush

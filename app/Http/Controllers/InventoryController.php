@@ -40,12 +40,16 @@ class InventoryController extends Controller
 
     public function create(): View
     {
+        $this->authorize('create-inventory');
+
         $categories = Category::all();
         return view('inventory.create', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorize('create-inventory');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'brand' => 'nullable|string|max:255',
