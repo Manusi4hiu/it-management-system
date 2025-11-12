@@ -117,7 +117,7 @@
         <div class="login-card">
             <div class="login-header">
                 <div class="logo-icon">
-                    <i class="fas fa-network-wired fa-2x text-white"></i>
+                    <img src="{{ asset('images/it-logo.png') }}" alt="IT Logo" style="width:48px;height:48px;object-fit:cover;border-radius:50%;">
                 </div>
                 <h3 class="mb-0 fw-bold">IT Management System</h3>
                 <p class="mb-0 opacity-75">Sign in to your account</p>
@@ -140,15 +140,15 @@
                     @csrf
 
                     <div class="input-group">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email"
-                               class="form-control @error('email') is-invalid @enderror"
-                               name="email"
-                               value="{{ old('email') }}"
-                               placeholder="Email Address"
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text"
+                               class="form-control @error('name') is-invalid @enderror"
+                               name="name"
+                               value="{{ old('name') }}"
+                               placeholder="Username"
                                required
                                autofocus>
-                        @error('email')
+                        @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

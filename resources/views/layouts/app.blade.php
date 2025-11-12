@@ -772,7 +772,16 @@
             <h4 class="text-white fw-bold mb-1">IT Management</h4>
             <p class="text-white-50 small mb-0">System Dashboard</p>
         </div>
-
+        <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                    href="{{ route('dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+        </li>
+        <div class="sidebar-heading">
+                Inventory Management
+        </div>
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
@@ -804,6 +813,15 @@
             @endauth --}}
 
             <div class="sidebar-heading">
+                ITSM Documents
+            </div>
+
+            <li class="nav-item">
+                <i class="fas fa-file-alt ms-1"> ITSM Documentation Coming Soon!
+                </i>
+            </li>
+
+            <div class="sidebar-heading">
                 Network Tools
             </div>
             {{-- <li class="nav-item">
@@ -811,7 +829,7 @@
                     href="{{ route('tools.ping') }}">
                     <i class="fas fa-satellite-dish"></i>
                     Ping
-                </a>
+                </>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('tools.traceroute') ? 'active' : '' }}"
